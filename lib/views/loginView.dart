@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mynotes/views/registerView.dart';
+import 'dart:developer' as devtools show log;
 
-class loginPage extends StatefulWidget {
-  const loginPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<loginPage> createState() => _loginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _loginPageState extends State<loginPage> {
+class _LoginPageState extends State<LoginPage> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -61,12 +61,16 @@ class _loginPageState extends State<loginPage> {
                 final userCredential = await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                         email: email, password: password);
-                print(userCredential);
+                devtools.log(userCredential.toString());
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/notes/',
+                  (route) => false,
+                );
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
-                  print("User not found");
+                  devtools.log('User not found');
                 } else if (e.code == 'wrong-password') {
-                  print("wrong password");
+                  devtools.log('Wrong password');
                 }
               }
             },
