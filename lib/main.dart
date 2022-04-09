@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/constants/routes.dart';
-import 'package:mynotes/views/loginView.dart';
-import 'package:mynotes/views/registerView.dart';
-import 'package:mynotes/views/verifyEmailView.dart';
+import 'package:mynotes/views/login_view.dart';
+import 'package:mynotes/views/register_view.dart';
+import 'package:mynotes/views/verify_email_view.dart';
 
 import 'firebase_options.dart';
 

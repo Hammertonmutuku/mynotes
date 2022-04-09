@@ -66,10 +66,20 @@ class _LoginPageState extends State<LoginPage> {
                     .signInWithEmailAndPassword(
                         email: email, password: password);
                 devtools.log(userCredential.toString());
+               final user = FirebaseAuth.instance.currentUser;
+              if (user?.emailVerified ?? false) {
+                //user is verified
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/notes/',
+                  notesRoute,
                   (route) => false,
                 );
+              } else {
+                //user not verified
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  verifyEmailRoute,
+                  (route) => false,
+                );
+              }
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
                   devtools.log('User not found');
@@ -92,7 +102,8 @@ class _LoginPageState extends State<LoginPage> {
                   .pushNamedAndRemoveUntil(registerRoute, (route) => false);
             }),
             child: const Text('Not registered yet? Register here!'),
-          )
+          ),
+         
         ],
       ),
     );
