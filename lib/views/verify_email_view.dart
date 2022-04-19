@@ -16,27 +16,53 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       appBar: AppBar(
         title: const Text('Verify email'),
       ),
-      body: Column(
-        children: [
-          const Text("We've already sent you a verification email"),
-          const Text(
-              "If you haven't received the email. Press the button below to recieve a new verificaton email"),
-          TextButton(
-            onPressed: (() async {
-              await AuthService.firebase().sendEmailVerification();
-            }),
-            child: const Text("Send Email Veirfication"),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+                child: Image.asset(
+                  "assets/mijiniColor.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const Text(
+                "We've already sent you a verification email",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "If you haven't received the email. Press the button below to recieve a new verificaton email",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              TextButton(
+                onPressed: (() async {
+                  await AuthService.firebase().sendEmailVerification();
+                }),
+                child: const Text("Send Email Veirfication"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await AuthService.firebase().logOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+                },
+                child: const Text(
+                  "Restart",
+                ),
+              )
+            ],
           ),
-          TextButton(
-            onPressed: () async{ 
-              await AuthService.firebase().logOut();
-              Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
-            },
-            child: const Text(
-              "Restart",
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

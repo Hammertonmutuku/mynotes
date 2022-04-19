@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
 
-import '../constants/routes.dart';
-import '../enums/menu_action.dart';
+import '../../constants/routes.dart';
+import '../../enums/menu_action.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
@@ -14,12 +14,11 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
-
   late final NoteService _noteService;
 
-String get userEmail =>  AuthService.firebase().currentUser!.email!;
+  String get userEmail => AuthService.firebase().currentUser!.email!;
 
-@override
+  @override
   void initState() {
     _noteService = NoteService();
     _noteService.open();
@@ -31,12 +30,19 @@ String get userEmail =>  AuthService.firebase().currentUser!.email!;
     _noteService.close();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Main UI'),
+        title: const Text('Home Page'),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(newNoteRoute); 
+            },
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               // devtools.log(value.toString());
@@ -66,32 +72,47 @@ String get userEmail =>  AuthService.firebase().currentUser!.email!;
           )
         ],
       ),
-      body: FutureBuilder(
-        future: _noteService.getOrCreateUser(email: userEmail),
-        builder: (context, snapshot) {
-         switch(snapshot.connectionState) {
-           case ConnectionState.done:
-            return StreamBuilder(
-               stream: _noteService.allNotes,
-               builder: (context, snapshot) {
-                 switch(snapshot.connectionState){
-                 
-                   case ConnectionState.waiting:
-                     return const Text('Waiting for all notes....');
-                    default:
-                    return const CircularProgressIndicator();
-                 }
-               },
-            );
-          default:
-          return const CircularProgressIndicator();
-          
-         }
-        },
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          buildImageCard(),
+          // buildImageInteractionCard(),
+        ],
       ),
     );
   }
 }
+
+Widget buildImageCard() => Card(
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Ink.image(
+            image: NetworkImage(
+              'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg',
+            ),
+            child: InkWell(
+              onTap: () {},
+            ),
+            height: 240,
+            fit: BoxFit.cover,
+          ),
+          Text(
+            'Card With Splash',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontSize: 24,
+            ),
+          ),
+        ],
+      ),
+    );
+
 
 Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(

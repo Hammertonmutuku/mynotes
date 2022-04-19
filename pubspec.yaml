@@ -41,8 +41,9 @@ dependencies:
   sqflite: ^2.0.2
   path_provider: ^2.0.9
   path: ^1.8.1
-  bloc: ^8.0.3
-  flutter_bloc: ^8.0.1
+  flutter_launcher_icons: ^0.9.2
+  flutter_riverpod: any
+  http: any
 
 dev_dependencies:
   flutter_test:
@@ -68,9 +69,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/mijiniColor.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
